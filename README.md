@@ -19,7 +19,7 @@ This is suitable for small businesses collecting orders or support requests via 
 - JavaScript
 
 ## 📷 Workflow Overview
-![Workflow Screenshot](./assets/united.jpg)
+![Workflow Screenshot](./assets/untitled.JPG)
 
 ## 📥 Exported Workflow
 You can import the `workflow.json` into your own n8n instance to test or extend it.
