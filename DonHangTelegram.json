@@ -1,0 +1,271 @@
+{
+  "name": "DonHangTelegram",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -820,
+        0
+      ],
+      "id": "e28434de-9afc-4e7d-bbaf-5ef129300345",
+      "name": "Telegram Trigger",
+      "webhookId": "c9501d3d-5890-48fa-bacc-5d94cd092d8c",
+      "credentials": {
+        "telegramApi": {
+          "id": "XpcsMdd38ZJZKEHK",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $json[\"message\"][\"text\"];\nconst lines = text.split('\\n');\n\nlet data = {\n  product: \"\",\n  quantity: \"\",\n  address: \"\"\n};\n\n// Tách từng dòng\nlines.forEach(line => {\n  if (line.toLowerCase().includes(\"sản phẩm\")) {\n    data.product = line.split(':')[1]?.trim() || \"\";\n  }\n  if (line.toLowerCase().includes(\"số lượng\")) {\n    data.quantity = line.split(':')[1]?.trim() || \"\";\n  }\n  if (line.toLowerCase().includes(\"địa chỉ\")) {\n    data.address = line.split(':')[1]?.trim() || \"\";\n  }\n});\n\n// Kiểm tra trường thiếu\nlet missingFields = [];\n\nif (!data.product) missingFields.push(\"Sản phẩm\");\nif (!data.quantity) missingFields.push(\"Số lượng\");\nif (!data.address) missingFields.push(\"Địa chỉ\");\n\n// Lấy thời gian hiện tại theo múi giờ Việt Nam\nconst dateTime = new Date().toLocaleString(\"vi-VN\", { timeZone: \"Asia/Ho_Chi_Minh\" });\n\n// Trả về dữ liệu\nreturn [{\n  json: {\n    ...data,\n    missingFields: missingFields.join(\", \"),\n    hasMissing: missingFields.length > 0,\n    orderTime: dateTime\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -620,
+        0
+      ],
+      "id": "8a41aae6-dbd7-4138-8b75-fa04bacbad53",
+      "name": "Code",
+      "alwaysOutputData": false,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1RL-oeIiQHO_VDpes0Xpuo6GZohvzJ6-yrc2Qo7VnGhU",
+          "mode": "list",
+          "cachedResultName": "DonHangTelegram",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RL-oeIiQHO_VDpes0Xpuo6GZohvzJ6-yrc2Qo7VnGhU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RL-oeIiQHO_VDpes0Xpuo6GZohvzJ6-yrc2Qo7VnGhU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "San pham": "={{ $json.product }}",
+            "So luong": "={{ $json.quantity }}",
+            "Dia chi": "={{ $json.address }}",
+            "Thoi gian dat hang": "={{ $json.orderTime }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "San pham",
+              "displayName": "San pham",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "So luong",
+              "displayName": "So luong",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Dia chi",
+              "displayName": "Dia chi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Thoi gian dat hang",
+              "displayName": "Thoi gian dat hang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -200,
+        -80
+      ],
+      "id": "bb182c80-4a51-4593-9cc5-f9b170aafe2a",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nLO5vODOnQj48Ddd",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$node[\"Telegram Trigger\"].json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "=⚠️ Bạn chưa nhập đủ thông tin! \nĐang thiếu trường: {{ $json.missingFields }}\n\nHãy điền đúng theo mẫu\nSản phẩm:\nĐịa chỉ:\nSố lượng:",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -200,
+        160
+      ],
+      "id": "5020689d-1169-429e-a365-f2b306168e73",
+      "name": "Telegram1",
+      "webhookId": "a9440050-8c25-4c29-a544-0b1a6b9b823b",
+      "credentials": {
+        "telegramApi": {
+          "id": "XpcsMdd38ZJZKEHK",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8f5e1202-6323-4ff7-8680-beb06ab02da7",
+              "leftValue": "={{ $json.hasMissing }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -420,
+        0
+      ],
+      "id": "25d9bd1e-432c-4763-8426-b58e1cf61499",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$node[\"Telegram Trigger\"].json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "=Đơn hàng được ghi nhận, \nSản phẩm:  {{ $json['San pham'] }}, \nSố lượng: {{ $json['So luong'] }}, \nĐịa chỉ:{{ $json['Dia chi'] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -20,
+        -80
+      ],
+      "id": "30216d83-09df-4593-b373-11ae9fe6149d",
+      "name": " Telegram",
+      "webhookId": "ecc9994f-7412-41e4-a164-73665d885b8d",
+      "credentials": {
+        "telegramApi": {
+          "id": "XpcsMdd38ZJZKEHK",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": " Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "46b5b27a-560a-47e6-ac57-94e41431925e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0d3dafdc67aa12f268209e02a6447b410a9e00fd302894efda0c0b1c3a481609"
+  },
+  "id": "DtmWVZUpNhwf8WP8",
+  "tags": []
+}
