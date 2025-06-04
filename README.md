@@ -1,4 +1,3 @@
-🎯 1. TÓM TẮT DỰ ÁN ĐỂ GHI VÀO CV
 Tên dự án: Telegram Order Automation Workflow
 Công cụ: n8n, Telegram Bot, Google Sheets, JavaScript (trong node Code)
 Mục tiêu: Tự động thu thập đơn hàng từ Telegram, kiểm tra điều kiện hợp lệ, lưu vào Google Sheet, và phản hồi khách hàng.
