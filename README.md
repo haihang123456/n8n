@@ -1,29 +1,8 @@
-# Telegram Order Workflow with n8n
+🎯 1. TÓM TẮT DỰ ÁN ĐỂ GHI VÀO CV
+Tên dự án: Telegram Order Automation Workflow
+Công cụ: n8n, Telegram Bot, Google Sheets, JavaScript (trong node Code)
+Mục tiêu: Tự động thu thập đơn hàng từ Telegram, kiểm tra điều kiện hợp lệ, lưu vào Google Sheet, và phản hồi khách hàng.
 
-This project demonstrates an automation workflow using [n8n](https://n8n.io) to collect orders from Telegram users, validate them, store the results in Google Sheets, and send response messages.
+Mô tả ngắn (CV):
 
-## 📌 Features
-- Trigger via Telegram Bot
-- Parse and validate input using JavaScript
-- Conditional logic with `IF` node
-- Append data to Google Sheets
-- Send confirmation/rejection via Telegram
-
-## 🧠 Example Use Case
-This is suitable for small businesses collecting orders or support requests via Telegram without a backend server.
-
-## 🔧 Technologies
-- n8n
-- Telegram Bot API
-- Google Sheets API
-- JavaScript
-
-## 📷 Workflow Overview
-![Workflow Screenshot](./assets/untitled.JPG)
-
-## 📥 Exported Workflow
-You can import the `DonHangTelegram.json` into your own n8n instance to test or extend it.
-
-## 📜 License
-MIT
-
+Thiết kế workflow tự động hoá tiếp nhận đơn hàng qua Telegram, xử lý điều kiện bằng JavaScript, lưu dữ liệu vào Google Sheets và phản hồi khách hàng. Workflow được xây dựng trên nền tảng n8n, có thể mở rộng tích hợp AI để phân tích nội dung hoặc xác thực đơn hàng.
