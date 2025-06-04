@@ -27,13 +27,4 @@ Phù hợp với các doanh nghiệp nhỏ thu thập đơn hàng hoặc yêu c�
 ## 📥 Workflow xuất ra
 Bạn có thể nhập file `DonHangTelegram.json` vào n8n để thử nghiệm hoặc mở rộng tùy ý.
 
-## 📜 Giấy phép
-MIT
-"""
 
-# Lưu file
-file_path = "/mnt/data/README.md"
-with open(file_path, "w", encoding="utf-8") as f:
-    f.write(readme_content)
-
-file_path
