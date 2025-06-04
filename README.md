@@ -1,6 +1,5 @@
 # Tạo file README.md với nội dung đã dịch sang tiếng Việt
 
-readme_content = """
 # Workflow Đặt Hàng qua Telegram với n8n
 
 Dự án này trình bày một quy trình tự động sử dụng [n8n](https://n8n.io) để thu thập đơn hàng từ người dùng Telegram, kiểm tra tính hợp lệ, lưu dữ liệu vào Google Sheets và gửi tin nhắn phản hồi.
